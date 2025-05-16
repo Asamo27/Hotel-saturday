@@ -1,32 +1,47 @@
-from application.EmployeeService import EmployeeService
-from domain.model.Employee import Employee
-from repository.persistence.EmployeeRepository import EmployeeRepository
+import mysql
+
+from mysql import connector
 
 
-class EmployeeInput:
-    def __init__(self):
-        self.employee_service = EmployeeService()
-        self.employee = Employee(None, None, None, None, None, None, None, None)
-        self.employee_repository = EmployeeRepository()
+class Conexion:
 
-    def register(self, employee, db):
-        id_employee = input("Ingrese documento de identidad del empleado")
-        self.employee.id = id_employee
-        name = input("Ingrese su nombre")
-        self.employee.name = name
-        last_name = input("Ingrese su apellido")
-        self.employee.last_name = last_name
-        phone = input("Ingrese su numero de telefono")
-        self.employee.phone = phone
-        email = input("Ingrese su email")
-        self.employee.email = email
-        password = input("Ingrese su contraseña")
-        self.employee.password = password
-        status = input("Ingrese el estado")
-        self.employee.status = status
-        salary = input("Ingrese su salario")
-        self.employee.salary = salary
-        self.employee_repository.create_employee_repository(self.employee, db)
 
-    def print_data(self):
-        self.employee_service.print_employee_data()
+    def __init__(self, host, port, user, password , database):
+        self.host = host
+        self.port = port
+        self.user = user
+        self.password = password
+        self.database = database
+
+    def connection(self):
+        try:
+            self.connection = mysql.connector.connect(
+                host = self.host,
+                port = self.port,
+                user = self.user,
+                password = self.password,
+                database = self.database
+            )
+            print("Conexión Establecidad")
+        except mysql.connector.Error as err:
+            print("error al conectar a la base de datos ", err)
+
+    def disconnect(self):
+        if self.connection:
+            self.connection.close()
+            print("Conexión Cerrada")
+
+    def execute_query(self, query , params= None):
+        cursor = self.connection.cursor(buffered= True)
+        try:
+            cursor.execute(query, params)
+            self.connection.commit()
+            print("Registro se guardo exitosamente")
+            if query.lower().startswith('select'):
+                result =cursor.fetchall()
+                return result
+        except mysql.connector.Error as err:
+            print("Error al ejecutar la consulta", err)
+            return None
+        finally:
+            cursor.close()
