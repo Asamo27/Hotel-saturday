@@ -1,32 +1,27 @@
-from application.EmployeeService import EmployeeService
 from domain.model.Employee import Employee
-from repository.persistence.EmployeeRepository import EmployeeRepository
 
-
-class EmployeeInput:
+class EmployeeRepository:
     def __init__(self):
-        self.employee_service = EmployeeService()
-        self.employee = Employee(None, None, None, None, None, None, None, None)
-        self.employee_repository = EmployeeRepository()
+        self.employee = Employee
 
-    def register(self, employee, db):
-        id_employee = input("Ingrese documento de identidad del empleado")
-        self.employee.id = id_employee
-        name = input("Ingrese su nombre")
-        self.employee.name = name
-        last_name = input("Ingrese su apellido")
-        self.employee.last_name = last_name
-        phone = input("Ingrese su numero de telefono")
-        self.employee.phone = phone
-        email = input("Ingrese su email")
-        self.employee.email = email
-        password = input("Ingrese su contraseña")
-        self.employee.password = password
-        status = input("Ingrese el estado")
-        self.employee.status = status
-        salary = input("Ingrese su salario")
-        self.employee.salary = salary
-        self.employee_repository.create_employee_repository(self.employee, db)
+    def create_employee_repository(self, employee, db):
+        query = "INSERT INTO Employee (id_employee, name, last_name, phone,  email, password, status, salary) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)"
+        values = (employee.id, employee.name, employee.last_name,employee.phone,employee.email, employee.password, employee.status, employee.salary)
+        db.execute_query(query, values)
 
-    def print_data(self):
-        self.employee_service.print_employee_data()
+    def find_all_employees(self, db):
+        query = "SELECT * FROM employee"
+        response = db.execute_query(query)
+        return response
+
+
+    def update(self, employee, db):
+        query = "UPDATE Employee SET name = %s, last_name = %s, phone = %s, email = %s, password = %s, status = %s, salary = %s WHERE id_employee = %s"
+        values = (employee.name, employee.last_name, employee.phone, employee.email, employee.password, employee.status, employee.salary, employee.id)
+        return db.execute_query(query, values)
+
+    def delete(self, id_employee, db):
+        query = "DELETE FROM Employee WHERE id_employee = %s"
+        values = (id_employee,)
+        response = db.execute_query(query, values)
+        return response
