@@ -14,10 +14,10 @@ class GuestInput:
     def register(self, guest, db):
         id_user = int(input("Ingrese su documento de identidad"))
         self.guest.id = id_user
-        def get_guest_name():
-        name = input("Ingrese el nombre del huésped: ").strip()
-        while not name:  
-        print("El nombre no puede estar vacío.")
+        def get_guest_name(self):
+            name = input("Ingrese el nombre del huésped: ").strip()
+        while not name:
+            print("El nombre no puede estar vacío.")
         name = input("Ingrese el nombre del huésped: ").strip()
         return name
         last_name = input("Ingrese su apellido")
