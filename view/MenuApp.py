@@ -44,14 +44,14 @@ class MenuApp:
         init = int(input("\nPulse 1 para comenzar, 0 para cerrar: "))
 
         while init != 0:
-            print("-- MAIN MENU --")
-            print(" 1. Iniciar Sesion")
-            print(" 2. Registro de un nuevo cliente")
+            print("-- MENU PRINCIPAL --")
+            print(" 1. Iniciar SesiÓn")
+            print(" 2. Registrar un nuevo cliente")
             print(" 3. Gestión de Reservas del cliente")
             print(" 4. Gestión de Habitaciones para el cliente")
             print(" 5. Sesion para Empleados")
             print(" 6. Sesion para Servicios")
-            print(" 0. Salir del sistema")
+            print(" 0. Salir del sistema Hotel Saturday")
 
             option = input("\nElija una opción: ")
 
